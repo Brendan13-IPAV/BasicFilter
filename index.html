@@ -216,7 +216,7 @@
             margin-top: auto;
         }
 
-        .card-tag {
+        .brick-tag {
             display: inline-block;
             padding: 4px 8px;
             border-radius: 4px;
@@ -502,19 +502,28 @@
             const rightsFilter = document.getElementById('rightsType').value;
             const strategyFilter = document.getElementById('strategyType').value;
             
-            let filteredOptions = optionsData;
+            // Get all cards for direct filtering
+            const cards = document.querySelectorAll('.card');
+            let matchingIndices = [];
             
-            // Apply rights type filter
-            if (rightsFilter !== 'all') {
-                filteredOptions = filteredOptions.filter(option => option.rightsType === rightsFilter);
-            }
+            // Check each card against filters
+            cards.forEach(card => {
+                const cardId = parseInt(card.dataset.id);
+                const cardRights = card.dataset.rightsType;
+                const cardStrategy = card.dataset.strategyType;
+                
+                // Check if this card matches both filters
+                const matchesRights = rightsFilter === 'all' || cardRights === rightsFilter;
+                const matchesStrategy = strategyFilter === 'all' || cardStrategy === strategyFilter;
+                
+                // Both conditions must be true for the card to match
+                if (matchesRights && matchesStrategy) {
+                    matchingIndices.push(cardId);
+                }
+            });
             
-            // Apply strategy type filter
-            if (strategyFilter !== 'all') {
-                filteredOptions = filteredOptions.filter(option => option.strategyType === strategyFilter);
-            }
-            
-            return filteredOptions;
+            // Return the matching options based on the indices
+            return optionsData.filter((_, index) => matchingIndices.includes(index));
         }
 
         // Apply filters and update the display
