@@ -380,150 +380,388 @@
     </main>
 
     <script>
-        // Sample data with multiple tags
-        const optionsData = [
-            // Sample data
-            {
-                overtitle: "Patent opposition",
-                mainTitle: "Challenge a new or amended patent",
-                description: "Initiate a challenge to the validity of a new patent with IP Australia.",
-                strategyType: ["Enforcement"],
-                rightsType: ["Patents"]
-            },
-            {
-                overtitle: "Patent re-examination",
-                mainTitle: "Challenge a granted patent",
-                description: "Request a re-examination with IP Australia, to revoke or amend a granted patent.",
-                strategyType: ["Enforcement"],
-                rightsType: ["Patents"]
-            },
-            {
-                overtitle: "Court - Patent",
-                mainTitle: "Seek binding, authoritative decisions",
-                description: "Escalate a wide range of patent matters to court.",
-                strategyType: ["Enforcement"],
-                rightsType: ["Patents", "Trade marks"] // Multiple rights
-            },
-            {
-                overtitle: "Trade mark opposition",
-                mainTitle: "Challenge the registration of a trade mark",
-                description: "Initiate a trade mark opposition process against a new trademark with IP Australia.",
-                strategyType: ["Enforcement"],
-                rightsType: ["Trade marks"]
-            },
-            {
-                overtitle: "Trade mark non-use action",
-                mainTitle: "Remove a trade mark from the register",
-                description: "Request IP Australia removes a trade mark from REGISTER FOR NON-USE",
-                strategyType: ["Enforcement"],
-                rightsType: ["Trade marks"]
-            },
-            {
-                overtitle: "Mediation",
-                mainTitle: "Resolve IP issues with the help of a third party",
-                description: "Invite the other party to enter into mediation to agree to mutually acceptable agreement.",
-                strategyType: ["Enforcement", "Accused"], // Multiple strategies
-                rightsType: ["All rights", "Patents", "Trade marks"] // Multiple rights
-            },
-            {
-                overtitle: "Evidence collection",
-                mainTitle: "Monitor potential infringement",
-                description: "Systematically track and document suspected IP violations to build a stronger case.",
-                strategyType: ["Proactive"],
-                rightsType: ["All rights"]
-            },
-            {
-                overtitle: "IP insurance",
-                mainTitle: "Coverage against potential future infringement",
-                description: "Protect yourself from certain cost involved in IP disputes",
-                strategyType: ["Proactive"],
-                rightsType: ["All rights"]
-            },
-            {
-                overtitle: "Design registration",
-                mainTitle: "Secure protection for your design",
-                description: "Register your design with IP Australia to secure exclusive rights.",
-                strategyType: ["Proactive"],
-                rightsType: ["Design rights"]
-            },
-            {
-                overtitle: "Plant Breeder's Rights application",
-                mainTitle: "Protect new plant varieties",
-                description: "Secure exclusive commercial rights to a new plant variety you've bred or developed.",
-                strategyType: ["Proactive"],
-                rightsType: ["Plant breeder's rights"]
-            },
-            {
-                overtitle: "Copyright registration",
-                mainTitle: "Document your copyright ownership",
-                description: "While automatic, documenting your copyright can strengthen your position in disputes.",
-                strategyType: ["Proactive"],
-                rightsType: ["Copyright"]
-            },
-            {
-                overtitle: "IP audits",
-                mainTitle: "Review your IP portfolio",
-                description: "Understand and assess the health and enforceability of your intellectual property.",
-                strategyType: ["Proactive"],
-                rightsType: ["All rights", "Trade marks"] // Multiple rights
-            },
-            {
-                overtitle: "Trade mark registration",
-                mainTitle: "Register your trade mark",
-                description: "Apply to register your trade mark with IP Australia.",
-                strategyType: ["Proactive"],
-                rightsType: ["Trade marks"]
-            },
-            {
-                overtitle: "IP Professional",
-                mainTitle: "Conduct an IP rights search",
-                description: "Discover existing IP rights that may impact your business decisions.",
-                strategyType: ["Proactive", "Accused"], // Multiple strategies
-                rightsType: ["All rights"]
-            },
-            {
-                overtitle: "Letter of demand",
-                mainTitle: "Demand the other party stops infringing",
-                description: "Send a letter to the infringing party notifying them of potential infringement.",
-                strategyType: ["Enforcement"],
-                rightsType: ["All rights", "Patents", "Trade marks"] // Multiple rights
-            },
-            {
-                overtitle: "Arbitration",
-                mainTitle: "Resolve IP issues with the help of a third party",
-                description: "Agree to be bound by the decision of a highly qualified third party assessment.",
-                strategyType: ["Enforcement", "Accused"],
-                rightsType: ["All rights"]
-            },
-            {
-                overtitle: "World IP Organisation (WIPO)",
-                mainTitle: "Resolve international disputes",
-                description: "Seek dispute resolution through the WIPO Arbitration and Mediation Center",
-                strategyType: ["Enforcement", "Accused"],
-                rightsType: ["All rights", "Patents", "Trade marks", "Design rights"] // Multiple rights
-            },
-            {
-                overtitle: "Responding to allegations",
-                mainTitle: "Address claims of infringement",
-                description: "Develop a strategy to respond to allegations that you've infringed someone else's IP rights.",
-                strategyType: ["Accused"],
-                rightsType: ["All rights"]
-            },
-            {
-                overtitle: "Design around strategy",
-                mainTitle: "Modify your product or service",
-                description: "Make changes to avoid infringement while maintaining functionality and market appeal.",
-                strategyType: ["Accused"],
-                rightsType: ["Patents", "Design rights"]
-            },
-            {
-                overtitle: "Counterclaim",
-                mainTitle: "Challenge the validity of their rights",
-                description: "Respond to accusations by challenging the validity of the accuser's IP rights.",
-                strategyType: ["Accused"],
-                rightsType: ["All rights"]
-            }
-        ];
+
+        // Sample data with multiple tags based on IPFR Option Title Drafts
+const optionsData = [
+    {
+        overtitle: "Patent opposition",
+        mainTitle: "Challenge a new or amended patent",
+        description: "Initiate a challenge to the validity of a new patent with IP Australia.",
+        strategyType: ["Enforcement"],
+        rightsType: ["Patents"]
+    },
+    {
+        overtitle: "Patent re-examination",
+        mainTitle: "Challenge a granted patent",
+        description: "Request a re-examination with IP Australia, to revoke or amend a granted patent.",
+        strategyType: ["Enforcement"],
+        rightsType: ["Patents"]
+    },
+    {
+        overtitle: "Court - Patent",
+        mainTitle: "Seek binding, authoritative decisions",
+        description: "Escalate a wide range of patent matters to court.",
+        strategyType: ["Enforcement"],
+        rightsType: ["Patents"]
+    },
+    {
+        overtitle: "Trade mark opposition",
+        mainTitle: "Challenge the registration of a trade mark",
+        description: "Initiate a trade mark opposition process against a new trademark with IP Australia.",
+        strategyType: ["Enforcement"],
+        rightsType: ["Trade marks"]
+    },
+    {
+        overtitle: "Trade mark registration revocation",
+        mainTitle: "Remove a trade mark from the register",
+        description: "Let IP Australia know a recently registered trade mark should not have been registered.",
+        strategyType: ["Enforcement"],
+        rightsType: ["Trade marks"]
+    },
+    {
+        overtitle: "Trade mark non-use action",
+        mainTitle: "Remove a trade mark from the register",
+        description: "Request IP Australia removes a trade mark from register for non-use.",
+        strategyType: ["Enforcement"],
+        rightsType: ["Trade marks"]
+    },
+    {
+        overtitle: "Court - Trade Mark",
+        mainTitle: "Seek binding, authoritative decisions",
+        description: "Escalate a wide range of trade mark matters to court.",
+        strategyType: ["Enforcement"],
+        rightsType: ["Trade marks"]
+    },
+    {
+        overtitle: "Interim court injunction order",
+        mainTitle: "Stop infringing activity immediately",
+        description: "Lodge an interim injunction order through court.",
+        strategyType: ["Enforcement"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "World IP Organisation (WIPO)",
+        mainTitle: "Resolve international disputes",
+        description: "Seek dispute resolution through the WIPO Arbitration and Mediation Center.",
+        strategyType: ["Enforcement", "Accused"],
+        rightsType: ["All rights", "Patents", "Trade marks"]
+    },
+    {
+        overtitle: "Alternative dispute resolution (ADR)",
+        mainTitle: "Resolve conflicts with experienced facilitators",
+        description: "Understand more about the options in the ADR space.",
+        strategyType: ["Enforcement", "Accused"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "ASBFEO",
+        mainTitle: "Access help tailored to resolve business disputes",
+        description: "Australia Small Business & Family Enterprise Ombudsman (ASBFEO).",
+        strategyType: ["Enforcement", "Accused"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "Mediation",
+        mainTitle: "Resolve IP issues with the help of a third party",
+        description: "Invite the other party to enter into mediation to agree to a mutually acceptable agreement.",
+        strategyType: ["Enforcement", "Accused"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "Arbitration",
+        mainTitle: "Resolve IP issues with the help of a third party",
+        description: "Agree to be bound by the decision of a highly qualified third party assessment.",
+        strategyType: ["Enforcement", "Accused"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "Letter of demand",
+        mainTitle: "Demand the other party stops infringing",
+        description: "Send a letter to the infringing party notifying them of potential infringement.",
+        strategyType: ["Enforcement"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "Informal contact",
+        mainTitle: "Provide an opportunity to stop infringement",
+        description: "Alert the alleged infringer of your registered rights to allow them to stop infringing.",
+        strategyType: ["Enforcement"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "Negotiation",
+        mainTitle: "Agree to a commercial arrangement",
+        description: "Work with an IP professional to come to an agreement with another party.",
+        strategyType: ["Enforcement", "Accused"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "Takedown request",
+        mainTitle: "Stop infringement facilitated online",
+        description: "Request infringing material is removed from online marketplaces and platforms.",
+        strategyType: ["Enforcement"],
+        rightsType: ["All rights", "Copyright", "Trade marks"]
+    },
+    {
+        overtitle: "Report IP crime or safety concerns",
+        mainTitle: "Prevent risks to public interest",
+        description: "Inform Government about risks to public health, crime, counterfeiting, frauds & scams.",
+        strategyType: ["Enforcement"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "Notice of Objection",
+        mainTitle: "Stop infringing goods entering the country",
+        description: "Lodge a notice of objection with the Australian Border Force.",
+        strategyType: ["Enforcement"],
+        rightsType: ["All rights", "Trade marks"]
+    },
+    {
+        overtitle: "IP attorney or lawyer",
+        mainTitle: "Obtain legal advice on enforcement options",
+        description: "Seek a qualified & experienced professional to provide specific, tailored advice.",
+        strategyType: ["Enforcement", "Accused", "Proactive"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "International options",
+        mainTitle: "Enforce your IP overseas",
+        description: "Understand options relating to enforcing your IP overseas.",
+        strategyType: ["Enforcement"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "Monitor the situation",
+        mainTitle: "Take no immediate action",
+        description: "Strategically enforce your IP only when worthwhile.",
+        strategyType: ["Enforcement"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "Rebrand your business",
+        mainTitle: "Avoid potential IP conflicts",
+        description: "Strategically rebrand your business to avoid disputes.",
+        strategyType: ["Accused"],
+        rightsType: ["Trade marks"]
+    },
+    {
+        overtitle: "Evidence collection",
+        mainTitle: "Monitor potential infringement",
+        description: "Systematically track and document suspected IP violations to build a stronger case.",
+        strategyType: ["Proactive", "Enforcement"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "IP insurance",
+        mainTitle: "Coverage against potential future infringement",
+        description: "Protect yourself from certain costs involved in IP disputes.",
+        strategyType: ["Proactive"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "Domain Name Dispute (auDRP)",
+        mainTitle: "Dispute a domain name that infringes your trade mark",
+        description: "Dispute an .au domain name that may infringe an IP right.",
+        strategyType: ["Enforcement"],
+        rightsType: ["Trade marks"]
+    },
+    {
+        overtitle: "Domain Name Dispute (UDRP)",
+        mainTitle: "Challenge the use of international domain name",
+        description: "Dispute an international domain name that may infringe an IP right.",
+        strategyType: ["Enforcement"],
+        rightsType: ["Trade marks"]
+    },
+    {
+        overtitle: "Apply for an IP right",
+        mainTitle: "Register your IP right",
+        description: "Strengthen your position as the legal owner of an IP right with IP Australia.",
+        strategyType: ["Proactive"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "Apply for a trade mark",
+        mainTitle: "Register your trade mark",
+        description: "Strengthen your position as the registered owner of your trade mark in Australia.",
+        strategyType: ["Proactive"],
+        rightsType: ["Trade marks"]
+    },
+    {
+        overtitle: "Contact intermediaries",
+        mainTitle: "Engage with product distributors",
+        description: "Establish and maintain connections with suppliers, manufacturers, and resellers of your goods.",
+        strategyType: ["Proactive"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "IP audits",
+        mainTitle: "Review your IP portfolio",
+        description: "Understand and assess the health and enforceability of your trade marks.",
+        strategyType: ["Proactive"],
+        rightsType: ["All rights", "Trade marks"]
+    },
+    {
+        overtitle: "IP licensing",
+        mainTitle: "License your IP rights",
+        description: "Let others use your IP under agreed terms.",
+        strategyType: ["Proactive"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "Legislation",
+        mainTitle: "Understand relevant laws",
+        description: "Review the laws that protect and govern your IP rights.",
+        strategyType: ["Proactive", "Enforcement", "Accused"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "Monitoring service",
+        mainTitle: "Monitor for infringement",
+        description: "Get alerts when others use similar IP to yours.",
+        strategyType: ["Proactive"],
+        rightsType: ["All rights", "Trade marks"]
+    },
+    {
+        overtitle: "In-house expertise",
+        mainTitle: "Employ IP specialists",
+        description: "Hire specialists to manage your business IP matters.",
+        strategyType: ["Proactive"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "Customer awareness",
+        mainTitle: "Educate your customers",
+        description: "Help customers recognise and choose your brand above others.",
+        strategyType: ["Proactive"],
+        rightsType: ["Trade marks"]
+    },
+    {
+        overtitle: "Supply chain protection",
+        mainTitle: "Monitor supply chains",
+        description: "Identify key stakeholders in your product's supply chain to protect your interests.",
+        strategyType: ["Proactive"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "Proactive strategy",
+        mainTitle: "Plan offensive actions",
+        description: "Implement proactive measures to protect your IP, including legal actions.",
+        strategyType: ["Proactive"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "Defensive strategy",
+        mainTitle: "Implement defensive measures",
+        description: "Identify ways to protect your business without commencing legal action.",
+        strategyType: ["Proactive", "Accused"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "Market presence",
+        mainTitle: "Use your IP actively",
+        description: "Ensure your IP is actively used in the market to maintain rights.",
+        strategyType: ["Proactive"],
+        rightsType: ["All rights", "Trade marks"]
+    },
+    {
+        overtitle: "Online protection",
+        mainTitle: "Register with brand platforms",
+        description: "Strengthen your standing in online marketplaces like Amazon Brand Registry.",
+        strategyType: ["Proactive"],
+        rightsType: ["Trade marks"]
+    },
+    {
+        overtitle: "Risk assessment",
+        mainTitle: "Predict potential infringement",
+        description: "Determine likely areas of IP infringement to strengthen your response plan.",
+        strategyType: ["Proactive"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "Register monitoring",
+        mainTitle: "Track similar registrations",
+        description: "Set up alerts when others try to register similar IP.",
+        strategyType: ["Proactive"],
+        rightsType: ["All rights", "Trade marks", "Patents"]
+    },
+    {
+        overtitle: "IP Professional",
+        mainTitle: "Compare patent claims",
+        description: "Evaluate similarities and differences between patent claims to assess scope and potential infringement.",
+        strategyType: ["Proactive", "Accused", "Enforcement"],
+        rightsType: ["Patents"]
+    },
+    {
+        overtitle: "IP Professional",
+        mainTitle: "Conduct an IP rights search",
+        description: "Discover existing IP rights that may impact your business decisions.",
+        strategyType: ["Proactive", "Accused"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "Portfolio expansion",
+        mainTitle: "Apply for additional IP rights",
+        description: "Extend your IP protection by securing additional rights in relevant categories.",
+        strategyType: ["Proactive"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "Market entry assessment",
+        mainTitle: "Request a freedom to operate search",
+        description: "Determine if your product or service might infringe on existing IP rights.",
+        strategyType: ["Proactive", "Accused"],
+        rightsType: ["All rights", "Patents"]
+    },
+    {
+        overtitle: "IP Professional",
+        mainTitle: "Commission an IP rights audit",
+        description: "Obtain a comprehensive assessment of your existing IP assets and protections.",
+        strategyType: ["Proactive"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "IP Professional",
+        mainTitle: "Develop a commercialisation strategy",
+        description: "Create an integrated plan to leverage your IP assets for business growth.",
+        strategyType: ["Proactive"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "Plant breeder's rights",
+        mainTitle: "Protect new plant varieties",
+        description: "Apply for plant breeder's rights to protect new plant varieties you've developed.",
+        strategyType: ["Proactive"],
+        rightsType: ["Plant breeder's rights"]
+    },
+    {
+        overtitle: "Design registration",
+        mainTitle: "Protect your product design",
+        description: "Register the visual appearance of your product to prevent copying.",
+        strategyType: ["Proactive"],
+        rightsType: ["Design rights"]
+    },
+    {
+        overtitle: "Copyright registration",
+        mainTitle: "Document your copyright",
+        description: "While automatic, documenting copyright can strengthen your position in disputes.",
+        strategyType: ["Proactive"],
+        rightsType: ["Copyright"]
+    },
+    {
+        overtitle: "Counterclaim",
+        mainTitle: "Challenge the validity of their rights",
+        description: "Respond to accusations by challenging the validity of the accuser's IP rights.",
+        strategyType: ["Accused"],
+        rightsType: ["All rights"]
+    },
+    {
+        overtitle: "Design around strategy",
+        mainTitle: "Modify your product or service",
+        description: "Make changes to avoid infringement while maintaining functionality and market appeal.",
+        strategyType: ["Accused"],
+        rightsType: ["Patents", "Design rights"]
+    }
+];
 
         // Create and distribute cards across 3 columns
         function createCardLayout() {
