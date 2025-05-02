@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IP Options Prototype</title>
+    <title>IP Options Prototype - Offset Columns</title>
     <style>
         :root {
             --dark-blue: #1D2939; /* Header background */
@@ -21,11 +21,7 @@
             background-color: var(--light-mint);
             line-height: 1.5;
             margin: 0;
-            transition: background-color 0.5s ease;
-        }
-        
-        body.is-filtering {
-            background-color: #F0F4F8; /* Subtle background shift during filtering */
+            padding: 0;
         }
 
         h1 {
@@ -41,11 +37,6 @@
             margin-bottom: 20px;
         }
 
-        h3 {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -56,12 +47,6 @@
             background-color: var(--dark-blue);
             color: white;
             padding: 15px 0;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
         .logo {
@@ -77,6 +62,7 @@
             margin-bottom: 40px;
         }
 
+        /* Filter Controls */
         .filter-section {
             background-color: white;
             border-radius: 8px;
@@ -94,7 +80,7 @@
 
         .filter-group {
             flex: 1;
-            min-width: 200px; 
+            min-width: 200px;
         }
 
         .form-label {
@@ -115,17 +101,6 @@
             outline: none;
             border-color: var(--teal);
             box-shadow: 0 0 0 3px rgba(85, 171, 201, 0.15);
-        }
-
-        .checkbox-label {
-            display: flex;
-            align-items: center;
-            margin-bottom: 12px;
-            cursor: pointer;
-        }
-
-        .checkbox-label input {
-            margin-right: 10px;
         }
 
         .btn {
@@ -156,32 +131,42 @@
             background-color: #F9FAFB;
         }
 
-        .cards-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 40px 30px; /* Increased vertical and horizontal gap */
+        .results-summary {
+            margin: 15px 0 25px 0;
+            color: var(--text-primary);
+            font-size: 18px;
+            font-weight: 500;
+            background-color: #F0F7FA;
+            padding: 10px 15px;
+            border-radius: 6px;
+            border-left: 3px solid var(--teal);
+        }
+
+        /* Offset Columns Layout */
+        .offset-layout {
+            display: flex;
+            gap: 30px;
             margin-top: 30px;
-            transition: height 0.5s ease;
-            padding: 10px;
         }
-        
-        .cards-container.filtering {
-            transition: all 0.3s ease;
+
+        .column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
         }
-        
-        @keyframes cardEnter {
-            0% {
-                opacity: 0;
-                transform: translateY(30px) scale(0.9);
-            }
-            60% {
-                opacity: 1;
-                transform: translateY(-5px) scale(1.02);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+
+        /* Column offsets - creates uneven tops */
+        .column:nth-child(1) {
+            margin-top: 0px;
+        }
+
+        .column:nth-child(2) {
+            margin-top: 80px;
+        }
+
+        .column:nth-child(3) {
+            margin-top: 40px;
         }
 
         .card {
@@ -190,33 +175,17 @@
             box-shadow: 0 1px 3px rgba(16, 24, 40, 0.1);
             padding: 24px;
             border-left: 3px solid var(--teal);
-            position: relative;
-            margin-top: 0;
-            transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
-            height: 100%;
+            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
             display: flex;
             flex-direction: column;
-            opacity: 1;
-            transform: scale(1) translateY(0);
-            animation: cardEnter 0.6s cubic-bezier(0.19, 1, 0.22, 1) both;
-            animation-delay: calc(var(--animation-order, 0) * 0.08s); /* Increased delay for more pronounced staggering */
         }
-        
-        .card:nth-child(3n+1) {
-            margin-top: 25px; /* Increased offset */
-        }
-        
-        .card:nth-child(3n+2) {
-            margin-top: -25px; /* Increased offset */
-        }
-        
+
         .card.filtered-out {
-            opacity: 0.25; /* More faded */
-            transform: scale(0.92) translateY(30px); /* Added downward movement */
-            filter: grayscale(1) blur(1px); /* Added slight blur for more distinction */
+            opacity: 0.25;
+            transform: translateY(20px);
+            filter: grayscale(1);
             pointer-events: none;
-            box-shadow: none; /* Remove shadow for filtered items */
-            border-left-color: #cccccc; /* Desaturate the border color */
+            border-left-color: #cccccc;
         }
 
         .card-overtitle {
@@ -265,11 +234,6 @@
             color: var(--highlight);
         }
 
-        .results-summary {
-            margin-bottom: 20px;
-            color: var(--text-secondary);
-        }
-
         .no-results {
             text-align: center;
             padding: 40px;
@@ -277,19 +241,33 @@
             background-color: white;
             border-radius: 8px;
             margin-top: 20px;
+            display: none;
         }
 
-        @media (max-width: 768px) {
-            .filter-controls {
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 900px) {
+            .offset-layout {
                 flex-direction: column;
             }
             
-            .cards-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .card:nth-child(3n+1), .card:nth-child(3n+2) {
-                margin-top: 0;
+            .column {
+                margin-top: 0 !important;
             }
         }
     </style>
@@ -297,9 +275,7 @@
 <body>
     <header class="header">
         <div class="container">
-            <div class="header-content">
-                <div class="logo">IP Options Prototype</div>
-            </div>
+            <div class="logo">IP Options Prototype</div>
         </div>
     </header>
 
@@ -307,11 +283,12 @@
         <div class="container">
             <section class="title-section">
                 <h1>IP Options Explorer</h1>
-                <p>Browse and filter available IP options for different strategies and rights types.</p>
+                <p>Browse and filter available IP options in a non-linear layout to explore possibilities.</p>
             </section>
 
             <section class="filter-section">
                 <h2>Filter Options</h2>
+                <div class="results-summary" id="results-summary">Showing all options</div>
                 <div class="filter-controls">
                     <div class="filter-group">
                         <label class="form-label" for="rightsType">Type of Rights</label>
@@ -334,22 +311,17 @@
                             <option value="Unspecified">Unspecified</option>
                         </select>
                     </div>
-
-                    <div class="filter-group">
-                        <label class="form-label" for="search">Search</label>
-                        <input type="text" id="search" class="form-control" placeholder="Search options...">
-                    </div>
                 </div>
                 <button id="reset-filters" class="btn btn-secondary">Reset Filters</button>
             </section>
 
-            <div class="results-summary" id="results-summary">Showing all options</div>
-
-            <div class="cards-container" id="cards-container">
-                <!-- Cards will be dynamically generated here -->
+            <div class="offset-layout" id="offset-layout">
+                <div class="column" id="column-1"></div>
+                <div class="column" id="column-2"></div>
+                <div class="column" id="column-3"></div>
             </div>
 
-            <div class="no-results" id="no-results" style="display: none;">
+            <div class="no-results" id="no-results">
                 <h3>No options match your filters</h3>
                 <p>Try adjusting your filter criteria to see more options.</p>
             </div>
@@ -359,218 +331,125 @@
     <script>
         // Data structure for the options
         const optionsData = [
-            // This will be populated from the CSV data
+            // Sample data
+            {
+                overtitle: "Patent opposition",
+                mainTitle: "Challenge a new or amended patent",
+                description: "Initiate a challenge to the validity of a new patent with IP Australia.",
+                strategyType: "Reactive",
+                rightsType: "Patent"
+            },
+            {
+                overtitle: "Patent re-examination",
+                mainTitle: "Challenge a granted patent",
+                description: "Request a re-examination with IP Australia, to revoke or amend a granted patent.",
+                strategyType: "Reactive",
+                rightsType: "Patent"
+            },
+            {
+                overtitle: "Court - Patent",
+                mainTitle: "Seek binding, authoritative decisions",
+                description: "Escalate a wide range of patent matters to court.",
+                strategyType: "Reactive",
+                rightsType: "Patent"
+            },
+            {
+                overtitle: "Trade mark opposition",
+                mainTitle: "Challenge the registration of a trade mark",
+                description: "Initiate a trade mark opposition process against a new trademark with IP Australia.",
+                strategyType: "Reactive",
+                rightsType: "Trade Mark"
+            },
+            {
+                overtitle: "Trade mark non-use action",
+                mainTitle: "Remove a trade mark from the register",
+                description: "Request IP Australia removes a trade mark from REGISTER FOR NON-USE",
+                strategyType: "Reactive",
+                rightsType: "Trade Mark"
+            },
+            {
+                overtitle: "Mediation",
+                mainTitle: "Resolve IP issues with the help of a third party",
+                description: "Invite the other party to enter into mediation to agree to mutually acceptable agreement.",
+                strategyType: "Reactive",
+                rightsType: "Other"
+            },
+            {
+                overtitle: "Evidence collection",
+                mainTitle: "Monitor potential infringement",
+                description: "Systematically track and document suspected IP violations to build a stronger case.",
+                strategyType: "Proactive",
+                rightsType: "Other"
+            },
+            {
+                overtitle: "IP insurance",
+                mainTitle: "Coverage against potential future infringement",
+                description: "Protect yourself from certain cost involved in IP disputes",
+                strategyType: "Proactive",
+                rightsType: "IP Professional Services"
+            },
+            {
+                overtitle: "Domain Name Dispute (auDRP)",
+                mainTitle: "Dispute a domain name that infringes your trade mark",
+                description: "Dispute an .au domain name that may infringe an IP right",
+                strategyType: "Reactive",
+                rightsType: "Domain Name"
+            },
+            {
+                overtitle: "IP audits",
+                mainTitle: "Review your IP portfolio",
+                description: "Understand and assess the health and enforceability of your trade marks.",
+                strategyType: "Proactive",
+                rightsType: "IP Professional Services"
+            },
+            {
+                overtitle: "Registration",
+                mainTitle: "Register your trade mark",
+                description: "Apply to register your trade mark with IP Australia.",
+                strategyType: "Proactive",
+                rightsType: "Trade Mark"
+            },
+            {
+                overtitle: "IP Professional",
+                mainTitle: "Conduct an IP rights search",
+                description: "Discover existing IP rights that may impact your business decisions.",
+                strategyType: "Unspecified",
+                rightsType: "IP Professional Services"
+            },
+            {
+                overtitle: "Letter of demand",
+                mainTitle: "Demand the other party stops infringing",
+                description: "Send a letter to the infringing party notifying them of potential infringement.",
+                strategyType: "Reactive",
+                rightsType: "Other"
+            },
+            {
+                overtitle: "Arbitration",
+                mainTitle: "Resolve IP issues with the help of a third party",
+                description: "Agree to be bound by the decision of a highly qualified third party assessment.",
+                strategyType: "Reactive",
+                rightsType: "Other"
+            },
+            {
+                overtitle: "World IP Organisation (WIPO)",
+                mainTitle: "Resolve international disputes",
+                description: "Seek dispute resolution through the WIPO Arbitration and Mediation Center",
+                strategyType: "Reactive",
+                rightsType: "Other"
+            }
         ];
 
-        // Function to fetch and parse the CSV data
-        async function loadData() {
-            try {
-                const response = await fetch('Option Text.csv');
-                const text = await response.text();
-                parseCSV(text);
-            } catch (error) {
-                console.error('Error loading data:', error);
-                // Use hardcoded data if loading fails
-                loadHardcodedData();
-            }
-        }
-
-        // Parse CSV data
-        function parseCSV(csvText) {
-            const lines = csvText.split('\n');
-            const headers = lines[0].split(',');
+        // Create and distribute cards across 3 columns
+        function createCardLayout() {
+            // Get column elements
+            const columns = [
+                document.getElementById('column-1'),
+                document.getElementById('column-2'),
+                document.getElementById('column-3')
+            ];
             
-            // Skip header row, process data rows
-            for (let i = 1; i < lines.length; i++) {
-                if (!lines[i].trim()) continue; // Skip empty lines
-                
-                const values = lines[i].split(',');
-                if (values.length < 3) continue; // Skip malformed lines
-                
-                const overtitle = values[0].trim();
-                const mainTitle = values[1].trim().replace(/[""]/g, '');
-                // Handle descriptions that might contain commas
-                let description = '';
-                let strategyType = '';
-                
-                // If there are exactly 4 columns, it's simple
-                if (values.length === 4) {
-                    description = values[2].trim().replace(/[""]/g, '');
-                    strategyType = values[3].trim();
-                } else {
-                    // Handle case where description has commas
-                    // This is a simplified approach - in reality CSV parsing is more complex
-                    description = values.slice(2, values.length - 1).join(',').trim().replace(/[""]/g, '');
-                    strategyType = values[values.length - 1].trim();
-                }
-                
-                // Determine rights type
-                let rightsType = "Other";
-                if (overtitle.includes("Patent")) {
-                    rightsType = "Patent";
-                } else if (overtitle.includes("Trade mark") || overtitle.includes("Trademark")) {
-                    rightsType = "Trade Mark";
-                } else if (overtitle.includes("Domain")) {
-                    rightsType = "Domain Name";
-                } else if (overtitle.includes("IP Professional") || overtitle.includes("IP attorney") || 
-                        overtitle.includes("IP audit") || overtitle.includes("IP insurance")) {
-                    rightsType = "IP Professional Services";
-                }
-                
-                optionsData.push({
-                    overtitle,
-                    mainTitle,
-                    description,
-                    strategyType: strategyType || "Unspecified",
-                    rightsType
-                });
-            }
-            
-            renderCards();
-        }
-
-        // Fallback - use hardcoded data if CSV loading fails
-        function loadHardcodedData() {
-            // Sample data matching CSV format
-            optionsData.push(
-                {
-                    overtitle: "Patent opposition",
-                    mainTitle: "Challenge a new or amended patent",
-                    description: "Initiate a challenge to the validity of a new patent with IP Australia.",
-                    strategyType: "Reactive",
-                    rightsType: "Patent"
-                },
-                {
-                    overtitle: "Patent re-examination",
-                    mainTitle: "Challenge a granted patent",
-                    description: "Request a re-examination with IP Australia, to revoke or amend a granted patent.",
-                    strategyType: "Reactive",
-                    rightsType: "Patent"
-                },
-                {
-                    overtitle: "Court - Patent",
-                    mainTitle: "Seek binding, authoritative decisions",
-                    description: "Escalate a wide range of patent matters to court.",
-                    strategyType: "Reactive",
-                    rightsType: "Patent"
-                },
-                {
-                    overtitle: "Trade mark opposition",
-                    mainTitle: "Challenge the registration of a trade mark",
-                    description: "Initiate a trade mark opposition process against a new trademark with IP Australia.",
-                    strategyType: "Reactive",
-                    rightsType: "Trade Mark"
-                },
-                {
-                    overtitle: "Trade mark non-use action",
-                    mainTitle: "Remove a trade mark from the register",
-                    description: "Request IP Australia removes a trade mark from REGISTER FOR NON-USE",
-                    strategyType: "Reactive",
-                    rightsType: "Trade Mark"
-                },
-                {
-                    overtitle: "Mediation",
-                    mainTitle: "Resolve IP issues with the help of a third party",
-                    description: "Invite the other party to enter into mediation to agree to mutually acceptable agreement.",
-                    strategyType: "Reactive",
-                    rightsType: "Other"
-                },
-                {
-                    overtitle: "Evidence collection",
-                    mainTitle: "Monitor potential infringement",
-                    description: "Systematically track and document suspected IP violations to build a stronger case.",
-                    strategyType: "Proactive",
-                    rightsType: "Other"
-                },
-                {
-                    overtitle: "IP insurance",
-                    mainTitle: "Coverage against potential future infringement",
-                    description: "Protect yourself from certain cost involved in IP disputes",
-                    strategyType: "Proactive",
-                    rightsType: "IP Professional Services"
-                },
-                {
-                    overtitle: "Domain Name Dispute (auDRP)",
-                    mainTitle: "Dispute a domain name that infringes your trade mark",
-                    description: "Dispute an .au domain name that may infringe an IP right",
-                    strategyType: "Reactive",
-                    rightsType: "Domain Name"
-                },
-                {
-                    overtitle: "IP audits",
-                    mainTitle: "Review your IP portfolio",
-                    description: "Understand and assess the health and enforceability of your trade marks.",
-                    strategyType: "Proactive",
-                    rightsType: "IP Professional Services"
-                },
-                {
-                    overtitle: "Registration",
-                    mainTitle: "Register your trade mark",
-                    description: "Apply to register your trade mark with IP Australia.",
-                    strategyType: "Proactive",
-                    rightsType: "Trade Mark"
-                },
-                {
-                    overtitle: "IP Professional",
-                    mainTitle: "Conduct an IP rights search",
-                    description: "Discover existing IP rights that may impact your business decisions.",
-                    strategyType: "Unspecified",
-                    rightsType: "IP Professional Services"
-                }
-            );
-            
-            renderCards();
-        }
-
-        // Initialize with hardcoded data for immediate demonstration
-        loadHardcodedData();
-        
-        // Try to load from CSV in background
-        // loadData();
-        
-        // Create cards once after data is loaded
-        window.addEventListener('load', () => {
-            // Short delay to ensure data is loaded
-            setTimeout(() => {
-                initializeCards();
-                renderCards();
-            }, 100);
-        });
-
-        // Filter options based on user selections
-        function filterOptions() {
-            const rightsFilter = document.getElementById('rightsType').value;
-            const strategyFilter = document.getElementById('strategyType').value;
-            const searchTerm = document.getElementById('search').value.toLowerCase();
-            
-            let filteredOptions = optionsData;
-            
-            // Apply rights type filter
-            if (rightsFilter !== 'all') {
-                filteredOptions = filteredOptions.filter(option => option.rightsType === rightsFilter);
-            }
-            
-            // Apply strategy type filter
-            if (strategyFilter !== 'all') {
-                filteredOptions = filteredOptions.filter(option => option.strategyType === strategyFilter);
-            }
-            
-            // Apply search filter
-            if (searchTerm) {
-                filteredOptions = filteredOptions.filter(option => 
-                    option.overtitle.toLowerCase().includes(searchTerm) ||
-                    option.mainTitle.toLowerCase().includes(searchTerm) ||
-                    option.description.toLowerCase().includes(searchTerm)
-                );
-            }
-            
-            return filteredOptions;
-        }
-
-        // Initialize cards once
-        function initializeCards() {
-            const cardsContainer = document.getElementById('cards-container');
-            cardsContainer.innerHTML = '';
+            // Clear existing content
+            columns.forEach(col => col.innerHTML = '');
             
             // Function to get tag color based on strategy type
             function getStrategyColor(type) {
@@ -581,19 +460,23 @@
                 }
             }
             
-            // Create all cards in random order once
+            // Randomize the order for non-linear display
             const shuffledOptions = [...optionsData].sort(() => 0.5 - Math.random());
             
+            // Distribute cards across columns
             shuffledOptions.forEach((option, index) => {
+                // Determine which column to place this card in
+                const columnIndex = index % 3;
+                
+                // Create card element
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.dataset.id = index;
                 card.dataset.rightsType = option.rightsType;
                 card.dataset.strategyType = option.strategyType;
                 
-                // More randomized staggering for initial load
-                const randomOffset = Math.random() * 0.15;
-                card.style.setProperty('--animation-order', index + randomOffset);
+                // Add staggered animation delay
+                card.style.animationDelay = `${index * 0.1}s`;
                 
                 card.innerHTML = `
                     <div class="card-overtitle">${option.overtitle}</div>
@@ -609,129 +492,126 @@
                     </div>
                 `;
                 
-                cardsContainer.appendChild(card);
+                // Add card to appropriate column
+                columns[columnIndex].appendChild(card);
             });
         }
-        
-        // Apply filters to existing cards
-        function renderCards() {
-            const cardsContainer = document.getElementById('cards-container');
+
+        // Filter options based on user selections
+        function filterOptions() {
+            const rightsFilter = document.getElementById('rightsType').value;
+            const strategyFilter = document.getElementById('strategyType').value;
+            
+            let filteredOptions = optionsData;
+            
+            // Apply rights type filter
+            if (rightsFilter !== 'all') {
+                filteredOptions = filteredOptions.filter(option => option.rightsType === rightsFilter);
+            }
+            
+            // Apply strategy type filter
+            if (strategyFilter !== 'all') {
+                filteredOptions = filteredOptions.filter(option => option.strategyType === strategyFilter);
+            }
+            
+            return filteredOptions;
+        }
+
+        // Apply filters and update the display
+        function applyFilters() {
+            const cards = document.querySelectorAll('.card');
             const noResults = document.getElementById('no-results');
             const resultsSummary = document.getElementById('results-summary');
             const filteredOptions = filterOptions();
             
-            // Get all cards
-            const allCards = document.querySelectorAll('.card');
-            let visibleCount = 0;
-            
             // Create a set of filtered option indices for quick lookup
             const filteredIndices = new Set(filteredOptions.map(option => optionsData.indexOf(option)));
             
-            // Apply filtered-out class to cards based on filter results with staggered animation
-            let visibleIndex = 0;
+            let visibleCount = 0;
             
-            allCards.forEach((card) => {
+            // Apply filtered-out class based on filter results
+            cards.forEach((card) => {
                 const cardId = parseInt(card.dataset.id);
                 
                 if (filteredIndices.has(cardId)) {
-                    // Stagger the animations of visible cards with more variation
-                    const randomDelay = Math.random() * 0.1;  // Add random component
-                    card.style.transitionDelay = (visibleIndex % 30) * 0.03 + randomDelay + 's';
                     card.classList.remove('filtered-out');
                     visibleCount++;
-                    visibleIndex++;
                 } else {
-                    // Staggered fade out for filtered out cards
-                    const randomFadeDelay = Math.random() * 0.15;
-                    card.style.transitionDelay = randomFadeDelay + 's';
                     card.classList.add('filtered-out');
                 }
             });
             
+            // Update results summary and no results message
             if (visibleCount === 0) {
                 noResults.style.display = 'block';
                 resultsSummary.textContent = 'No options match your filters';
             } else {
                 noResults.style.display = 'none';
-                resultsSummary.textContent = `Showing ${visibleCount} option${visibleCount === 1 ? '' : 's'} (${allCards.length - visibleCount} filtered out)`;
+                resultsSummary.textContent = `Showing ${visibleCount} option${visibleCount === 1 ? '' : 's'} (${cards.length - visibleCount} filtered out)`;
             }
+            
+            // Reorganize the columns - move filtered-out items to the bottom
+            reorganizeColumns();
         }
-
-        // Improve animations when filters change
-        document.getElementById('cards-container').addEventListener('transitionend', function(e) {
-            if (e.target.classList.contains('card')) {
-                // Remove transition delay after animation completes
-                e.target.style.transitionDelay = '';
-            }
-        });
         
-        // Set up event listeners with animation triggers
-        document.getElementById('rightsType').addEventListener('change', function() {
-            // Add animation class to container
-            const container = document.getElementById('cards-container');
-            container.classList.add('filtering');
+        // Reorganize all cards after filtering
+        function reorganizeColumns() {
+            // Get all columns
+            const columns = [
+                document.getElementById('column-1'),
+                document.getElementById('column-2'),
+                document.getElementById('column-3')
+            ];
             
-            // Add class to body for more global effect
-            document.body.classList.add('is-filtering');
+            // Get all cards and sort them - visible ones first, filtered-out ones at the bottom
+            const allCards = Array.from(document.querySelectorAll('.card'));
             
-            setTimeout(() => {
-                renderCards();
-                setTimeout(() => {
-                    document.body.classList.remove('is-filtering');
-                }, 1000);
-            }, 50);
-        });
-        
-        document.getElementById('strategyType').addEventListener('change', function() {
-            const container = document.getElementById('cards-container');
-            container.classList.add('filtering');
-            
-            // Add class to body for more global effect
-            document.body.classList.add('is-filtering');
-            
-            setTimeout(() => {
-                renderCards();
-                setTimeout(() => {
-                    document.body.classList.remove('is-filtering');
-                }, 1000);
-            }, 50);
-        });
-        
-        document.getElementById('search').addEventListener('input', function() {
-            const container = document.getElementById('cards-container');
-            container.classList.add('filtering');
-            
-            // Slight delay for search to feel responsive but still animate
-            clearTimeout(this.searchTimer);
-            this.searchTimer = setTimeout(() => {
-                document.body.classList.add('is-filtering');
-                renderCards();
-                setTimeout(() => {
-                    document.body.classList.remove('is-filtering');
-                }, 1000);
-            }, 150);
-        });
-        
-        document.getElementById('reset-filters').addEventListener('click', function() {
-            document.getElementById('rightsType').value = 'all';
-            document.getElementById('strategyType').value = 'all';
-            document.getElementById('search').value = '';
-            
-            // Extra animation for reset
-            const cards = document.querySelectorAll('.card');
-            cards.forEach((card, index) => {
-                const random = Math.random() * 0.2;
-                card.style.transitionDelay = (index % 40) * 0.02 + random + 's';
+            // Sort: visible cards first, then filtered out cards
+            allCards.sort((a, b) => {
+                const aFiltered = a.classList.contains('filtered-out');
+                const bFiltered = b.classList.contains('filtered-out');
+                
+                if (aFiltered && !bFiltered) return 1;  // a goes after b
+                if (!aFiltered && bFiltered) return -1; // a goes before b
+                return 0; // keep original order within their groups
             });
             
-            document.body.classList.add('is-filtering');
-            setTimeout(() => {
-                renderCards();
-                setTimeout(() => {
-                    document.body.classList.remove('is-filtering');
-                }, 1200);
-            }, 50);
-        });
+            // Clear all columns
+            columns.forEach(column => column.innerHTML = '');
+            
+            // Distribute cards evenly across columns
+            allCards.forEach((card, index) => {
+                // Assign to column based on position in the sorted array
+                const columnIndex = index % 3;
+                columns[columnIndex].appendChild(card);
+                
+                // Add transition effect for smoother movement
+                card.style.transition = 'all 0.6s ease';
+            });
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Filter change listeners
+            document.getElementById('rightsType').addEventListener('change', applyFilters);
+            document.getElementById('strategyType').addEventListener('change', applyFilters);
+            
+            // Reset filters button
+            document.getElementById('reset-filters').addEventListener('click', function() {
+                document.getElementById('rightsType').value = 'all';
+                document.getElementById('strategyType').value = 'all';
+                applyFilters();
+            });
+        }
+
+        // Initialize the prototype
+        function init() {
+            createCardLayout();
+            setupEventListeners();
+        }
+
+        // Start when the page is loaded
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
