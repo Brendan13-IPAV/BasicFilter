@@ -71,6 +71,17 @@
             box-shadow: 0 1px 3px rgba(16, 24, 40, 0.1);
         }
 
+        .results-summary {
+            margin: 15px 0 25px 0;
+            color: var(--text-primary);
+            font-size: 18px;
+            font-weight: 500;
+            background-color: #F0F7FA;
+            padding: 10px 15px;
+            border-radius: 6px;
+            border-left: 3px solid var(--teal);
+        }
+
         .filter-controls {
             display: flex;
             flex-wrap: wrap;
@@ -131,17 +142,6 @@
             background-color: #F9FAFB;
         }
 
-        .results-summary {
-            margin: 15px 0 25px 0;
-            color: var(--text-primary);
-            font-size: 18px;
-            font-weight: 500;
-            background-color: #F0F7FA;
-            padding: 10px 15px;
-            border-radius: 6px;
-            border-left: 3px solid var(--teal);
-        }
-
         /* Offset Columns Layout */
         .offset-layout {
             display: flex;
@@ -175,9 +175,10 @@
             box-shadow: 0 1px 3px rgba(16, 24, 40, 0.1);
             padding: 24px;
             border-left: 3px solid var(--teal);
-            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            transition: all 0.6s ease;
             display: flex;
             flex-direction: column;
+            transform-origin: center;
         }
 
         .card.filtered-out {
@@ -186,6 +187,7 @@
             filter: grayscale(1);
             pointer-events: none;
             border-left-color: #cccccc;
+            z-index: -1;
         }
 
         .card-overtitle {
@@ -212,16 +214,33 @@
         .card-footer {
             display: flex;
             justify-content: space-between;
-            align-items: center;
             margin-top: auto;
         }
-
+        
+        .tag-container {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            max-width: 45%;
+        }
+        
+        .strategy-tags {
+            align-items: flex-start;
+        }
+        
+        .rights-tags {
+            align-items: flex-end;
+        }
+        
         .brick-tag {
             display: inline-block;
             padding: 4px 8px;
             border-radius: 4px;
             font-size: 12px;
             font-weight: 500;
+            white-space: nowrap;
+            margin-bottom: 3px;
+            box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
         }
 
         .tag-strategy {
@@ -329,113 +348,113 @@
     </main>
 
     <script>
-        // Data structure for the options
+        // Sample data with multiple tags
         const optionsData = [
             // Sample data
             {
                 overtitle: "Patent opposition",
                 mainTitle: "Challenge a new or amended patent",
                 description: "Initiate a challenge to the validity of a new patent with IP Australia.",
-                strategyType: "Reactive",
-                rightsType: "Patent"
+                strategyType: ["Reactive"],
+                rightsType: ["Patent"]
             },
             {
                 overtitle: "Patent re-examination",
                 mainTitle: "Challenge a granted patent",
                 description: "Request a re-examination with IP Australia, to revoke or amend a granted patent.",
-                strategyType: "Reactive",
-                rightsType: "Patent"
+                strategyType: ["Reactive"],
+                rightsType: ["Patent"]
             },
             {
                 overtitle: "Court - Patent",
                 mainTitle: "Seek binding, authoritative decisions",
                 description: "Escalate a wide range of patent matters to court.",
-                strategyType: "Reactive",
-                rightsType: "Patent"
+                strategyType: ["Reactive"],
+                rightsType: ["Patent", "Trade Mark"] // Multiple rights
             },
             {
                 overtitle: "Trade mark opposition",
                 mainTitle: "Challenge the registration of a trade mark",
                 description: "Initiate a trade mark opposition process against a new trademark with IP Australia.",
-                strategyType: "Reactive",
-                rightsType: "Trade Mark"
+                strategyType: ["Reactive"],
+                rightsType: ["Trade Mark"]
             },
             {
                 overtitle: "Trade mark non-use action",
                 mainTitle: "Remove a trade mark from the register",
                 description: "Request IP Australia removes a trade mark from REGISTER FOR NON-USE",
-                strategyType: "Reactive",
-                rightsType: "Trade Mark"
+                strategyType: ["Reactive"],
+                rightsType: ["Trade Mark"]
             },
             {
                 overtitle: "Mediation",
                 mainTitle: "Resolve IP issues with the help of a third party",
                 description: "Invite the other party to enter into mediation to agree to mutually acceptable agreement.",
-                strategyType: "Reactive",
-                rightsType: "Other"
+                strategyType: ["Reactive", "Proactive"], // Multiple strategies
+                rightsType: ["Other", "Patent", "Trade Mark"] // Multiple rights
             },
             {
                 overtitle: "Evidence collection",
                 mainTitle: "Monitor potential infringement",
                 description: "Systematically track and document suspected IP violations to build a stronger case.",
-                strategyType: "Proactive",
-                rightsType: "Other"
+                strategyType: ["Proactive"],
+                rightsType: ["Other"]
             },
             {
                 overtitle: "IP insurance",
                 mainTitle: "Coverage against potential future infringement",
                 description: "Protect yourself from certain cost involved in IP disputes",
-                strategyType: "Proactive",
-                rightsType: "IP Professional Services"
+                strategyType: ["Proactive"],
+                rightsType: ["IP Professional Services"]
             },
             {
                 overtitle: "Domain Name Dispute (auDRP)",
                 mainTitle: "Dispute a domain name that infringes your trade mark",
                 description: "Dispute an .au domain name that may infringe an IP right",
-                strategyType: "Reactive",
-                rightsType: "Domain Name"
+                strategyType: ["Reactive"],
+                rightsType: ["Domain Name", "Trade Mark"] // Multiple rights
             },
             {
                 overtitle: "IP audits",
                 mainTitle: "Review your IP portfolio",
                 description: "Understand and assess the health and enforceability of your trade marks.",
-                strategyType: "Proactive",
-                rightsType: "IP Professional Services"
+                strategyType: ["Proactive"],
+                rightsType: ["IP Professional Services", "Trade Mark"] // Multiple rights
             },
             {
                 overtitle: "Registration",
                 mainTitle: "Register your trade mark",
                 description: "Apply to register your trade mark with IP Australia.",
-                strategyType: "Proactive",
-                rightsType: "Trade Mark"
+                strategyType: ["Proactive"],
+                rightsType: ["Trade Mark"]
             },
             {
                 overtitle: "IP Professional",
                 mainTitle: "Conduct an IP rights search",
                 description: "Discover existing IP rights that may impact your business decisions.",
-                strategyType: "Unspecified",
-                rightsType: "IP Professional Services"
+                strategyType: ["Unspecified", "Proactive"], // Multiple strategies
+                rightsType: ["IP Professional Services"]
             },
             {
                 overtitle: "Letter of demand",
                 mainTitle: "Demand the other party stops infringing",
                 description: "Send a letter to the infringing party notifying them of potential infringement.",
-                strategyType: "Reactive",
-                rightsType: "Other"
+                strategyType: ["Reactive"],
+                rightsType: ["Other", "Patent", "Trade Mark"] // Multiple rights
             },
             {
                 overtitle: "Arbitration",
                 mainTitle: "Resolve IP issues with the help of a third party",
                 description: "Agree to be bound by the decision of a highly qualified third party assessment.",
-                strategyType: "Reactive",
-                rightsType: "Other"
+                strategyType: ["Reactive"],
+                rightsType: ["Other"]
             },
             {
                 overtitle: "World IP Organisation (WIPO)",
                 mainTitle: "Resolve international disputes",
                 description: "Seek dispute resolution through the WIPO Arbitration and Mediation Center",
-                strategyType: "Reactive",
-                rightsType: "Other"
+                strategyType: ["Reactive"],
+                rightsType: ["Other", "Patent", "Trade Mark", "Domain Name"] // Multiple rights
             }
         ];
 
@@ -463,7 +482,7 @@
             // Randomize the order for non-linear display
             const shuffledOptions = [...optionsData].sort(() => 0.5 - Math.random());
             
-            // Distribute cards across columns
+            // Update each card with dataset attributes for reliable filtering
             shuffledOptions.forEach((option, index) => {
                 // Determine which column to place this card in
                 const columnIndex = index % 3;
@@ -472,23 +491,34 @@
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.dataset.id = index;
-                card.dataset.rightsType = option.rightsType;
-                card.dataset.strategyType = option.strategyType;
+                
+                // Store rights types and strategy types as JSON strings
+                card.dataset.rightsType = JSON.stringify(option.rightsType);
+                card.dataset.strategyType = JSON.stringify(option.strategyType);
                 
                 // Add staggered animation delay
                 card.style.animationDelay = `${index * 0.1}s`;
+                
+                // Create HTML for multiple tags
+                const rightsTagsHTML = option.rightsType.map(type => 
+                    `<span class="brick-tag tag-rights">${type}</span>`
+                ).join('');
+                
+                const strategyTagsHTML = option.strategyType.map(type => 
+                    `<span class="brick-tag tag-strategy" style="background-color: ${getStrategyColor(type)}">${type}</span>`
+                ).join('');
                 
                 card.innerHTML = `
                     <div class="card-overtitle">${option.overtitle}</div>
                     <h3 class="card-title">${option.mainTitle}</h3>
                     <div class="card-description">${option.description}</div>
                     <div class="card-footer">
-                        <span class="card-tag tag-strategy" style="background-color: ${getStrategyColor(option.strategyType)}">
-                            ${option.strategyType}
-                        </span>
-                        <span class="card-tag tag-rights">
-                            ${option.rightsType}
-                        </span>
+                        <div class="tag-container strategy-tags">
+                            ${strategyTagsHTML}
+                        </div>
+                        <div class="tag-container rights-tags">
+                            ${rightsTagsHTML}
+                        </div>
                     </div>
                 `;
                 
@@ -497,58 +527,49 @@
             });
         }
 
-        // Filter options based on user selections
-        function filterOptions() {
+        // Apply filters and update the display
+        function applyFilters() {
             const rightsFilter = document.getElementById('rightsType').value;
             const strategyFilter = document.getElementById('strategyType').value;
             
-            // Get all cards for direct filtering
+            console.log("Applying filters - Rights:", rightsFilter, "Strategy:", strategyFilter);
+            
+            // Get all cards
             const cards = document.querySelectorAll('.card');
-            let matchingIndices = [];
-            
-            // Check each card against filters
-            cards.forEach(card => {
-                const cardId = parseInt(card.dataset.id);
-                const cardRights = card.dataset.rightsType;
-                const cardStrategy = card.dataset.strategyType;
-                
-                // Check if this card matches both filters
-                const matchesRights = rightsFilter === 'all' || cardRights === rightsFilter;
-                const matchesStrategy = strategyFilter === 'all' || cardStrategy === strategyFilter;
-                
-                // Both conditions must be true for the card to match
-                if (matchesRights && matchesStrategy) {
-                    matchingIndices.push(cardId);
-                }
-            });
-            
-            // Return the matching options based on the indices
-            return optionsData.filter((_, index) => matchingIndices.includes(index));
-        }
-
-        // Apply filters and update the display
-        function applyFilters() {
-            const cards = document.querySelectorAll('.card');
-            const noResults = document.getElementById('no-results');
-            const resultsSummary = document.getElementById('results-summary');
-            const filteredOptions = filterOptions();
-            
-            // Create a set of filtered option indices for quick lookup
-            const filteredIndices = new Set(filteredOptions.map(option => optionsData.indexOf(option)));
-            
             let visibleCount = 0;
             
-            // Apply filtered-out class based on filter results
+            // Check each card directly
             cards.forEach((card) => {
                 const cardId = parseInt(card.dataset.id);
                 
-                if (filteredIndices.has(cardId)) {
+                // Parse the JSON strings from dataset
+                const cardRightsTypes = JSON.parse(card.dataset.rightsType);
+                const cardStrategyTypes = JSON.parse(card.dataset.strategyType);
+                
+                console.log(`Card ${cardId}: Rights=${cardRightsTypes}, Strategy=${cardStrategyTypes}`);
+                
+                // Check if card matches both filters
+                const matchesRights = rightsFilter === 'all' || 
+                                     (Array.isArray(cardRightsTypes) && 
+                                      cardRightsTypes.includes(rightsFilter));
+                
+                const matchesStrategy = strategyFilter === 'all' || 
+                                       (Array.isArray(cardStrategyTypes) && 
+                                        cardStrategyTypes.includes(strategyFilter));
+                
+                console.log(`Card ${cardId} matches - Rights: ${matchesRights}, Strategy: ${matchesStrategy}`);
+                
+                // Both conditions must be true for the card to match
+                if (matchesRights && matchesStrategy) {
                     card.classList.remove('filtered-out');
                     visibleCount++;
                 } else {
                     card.classList.add('filtered-out');
                 }
             });
+            
+            const noResults = document.getElementById('no-results');
+            const resultsSummary = document.getElementById('results-summary');
             
             // Update results summary and no results message
             if (visibleCount === 0) {
@@ -559,10 +580,10 @@
                 resultsSummary.textContent = `Showing ${visibleCount} option${visibleCount === 1 ? '' : 's'} (${cards.length - visibleCount} filtered out)`;
             }
             
-            // Reorganize the columns - move filtered-out items to the bottom
+            // Reorganize all cards after filtering
             reorganizeColumns();
         }
-        
+
         // Reorganize all cards after filtering
         function reorganizeColumns() {
             // Get all columns
@@ -617,6 +638,7 @@
         function init() {
             createCardLayout();
             setupEventListeners();
+            applyFilters(); // Apply initial filters
         }
 
         // Start when the page is loaded
