@@ -252,6 +252,37 @@
             background-color: #F0F0FF;
             color: var(--highlight);
         }
+        
+        /* Specific colors for different rights types */
+        .tag-rights[data-type="Patents"] {
+            background-color: rgba(29, 167, 175, 0.15); /* #1DA7AF with transparency */
+            color: #1DA7AF;
+        }
+        
+        .tag-rights[data-type="Trade marks"] {
+            background-color: rgba(222, 67, 38, 0.15); /* #DE4326 with transparency */
+            color: #DE4326;
+        }
+        
+        .tag-rights[data-type="Design rights"] {
+            background-color: rgba(132, 201, 143, 0.15); /* #84C98F with transparency */
+            color: #84C98F;
+        }
+        
+        .tag-rights[data-type="Plant breeder's rights"] {
+            background-color: rgba(241, 172, 30, 0.15); /* #F1AC1E with transparency */
+            color: #F1AC1E;
+        }
+        
+        .tag-rights[data-type="Copyright"] {
+            background-color: rgba(120, 122, 187, 0.15); /* #787ABB with transparency */
+            color: #787ABB;
+        }
+        
+        .tag-rights[data-type="All rights"] {
+            background-color: rgba(100, 100, 100, 0.15); /* Grey with transparency */
+            color: #666666;
+        }
 
         .no-results {
             text-align: center;
@@ -309,15 +340,16 @@
                 <h2>Filter Options</h2>
                 <div class="results-summary" id="results-summary">Showing all options</div>
                 <div class="filter-controls">
-                    <div class="filter-group">
+                <div class="filter-group">
                         <label class="form-label" for="rightsType">Type of Rights</label>
                         <select id="rightsType" class="form-control">
                             <option value="all">All Rights Types</option>
-                            <option value="Patent">Patent</option>
-                            <option value="Trade Mark">Trade Mark</option>
-                            <option value="Domain Name">Domain Name</option>
-                            <option value="IP Professional Services">IP Professional Services</option>
-                            <option value="Other">Other</option>
+                            <option value="Trade marks">Trade marks</option>
+                            <option value="Patents">Patents</option>
+                            <option value="Design rights">Design rights</option>
+                            <option value="Plant breeder's rights">Plant breeder's rights</option>
+                            <option value="Copyright">Copyright</option>
+                            <option value="All rights">All rights</option>
                         </select>
                     </div>
 
@@ -326,8 +358,8 @@
                         <select id="strategyType" class="form-control">
                             <option value="all">All Strategies</option>
                             <option value="Proactive">Proactive</option>
-                            <option value="Reactive">Reactive</option>
-                            <option value="Unspecified">Unspecified</option>
+                            <option value="Enforcement">Enforcement</option>
+                            <option value="Accused">Accused</option>
                         </select>
                     </div>
                 </div>
@@ -355,106 +387,141 @@
                 overtitle: "Patent opposition",
                 mainTitle: "Challenge a new or amended patent",
                 description: "Initiate a challenge to the validity of a new patent with IP Australia.",
-                strategyType: ["Reactive"],
-                rightsType: ["Patent"]
+                strategyType: ["Enforcement"],
+                rightsType: ["Patents"]
             },
             {
                 overtitle: "Patent re-examination",
                 mainTitle: "Challenge a granted patent",
                 description: "Request a re-examination with IP Australia, to revoke or amend a granted patent.",
-                strategyType: ["Reactive"],
-                rightsType: ["Patent"]
+                strategyType: ["Enforcement"],
+                rightsType: ["Patents"]
             },
             {
                 overtitle: "Court - Patent",
                 mainTitle: "Seek binding, authoritative decisions",
                 description: "Escalate a wide range of patent matters to court.",
-                strategyType: ["Reactive"],
-                rightsType: ["Patent", "Trade Mark"] // Multiple rights
+                strategyType: ["Enforcement"],
+                rightsType: ["Patents", "Trade marks"] // Multiple rights
             },
             {
                 overtitle: "Trade mark opposition",
                 mainTitle: "Challenge the registration of a trade mark",
                 description: "Initiate a trade mark opposition process against a new trademark with IP Australia.",
-                strategyType: ["Reactive"],
-                rightsType: ["Trade Mark"]
+                strategyType: ["Enforcement"],
+                rightsType: ["Trade marks"]
             },
             {
                 overtitle: "Trade mark non-use action",
                 mainTitle: "Remove a trade mark from the register",
                 description: "Request IP Australia removes a trade mark from REGISTER FOR NON-USE",
-                strategyType: ["Reactive"],
-                rightsType: ["Trade Mark"]
+                strategyType: ["Enforcement"],
+                rightsType: ["Trade marks"]
             },
             {
                 overtitle: "Mediation",
                 mainTitle: "Resolve IP issues with the help of a third party",
                 description: "Invite the other party to enter into mediation to agree to mutually acceptable agreement.",
-                strategyType: ["Reactive", "Proactive"], // Multiple strategies
-                rightsType: ["Other", "Patent", "Trade Mark"] // Multiple rights
+                strategyType: ["Enforcement", "Accused"], // Multiple strategies
+                rightsType: ["All rights", "Patents", "Trade marks"] // Multiple rights
             },
             {
                 overtitle: "Evidence collection",
                 mainTitle: "Monitor potential infringement",
                 description: "Systematically track and document suspected IP violations to build a stronger case.",
                 strategyType: ["Proactive"],
-                rightsType: ["Other"]
+                rightsType: ["All rights"]
             },
             {
                 overtitle: "IP insurance",
                 mainTitle: "Coverage against potential future infringement",
                 description: "Protect yourself from certain cost involved in IP disputes",
                 strategyType: ["Proactive"],
-                rightsType: ["IP Professional Services"]
+                rightsType: ["All rights"]
             },
             {
-                overtitle: "Domain Name Dispute (auDRP)",
-                mainTitle: "Dispute a domain name that infringes your trade mark",
-                description: "Dispute an .au domain name that may infringe an IP right",
-                strategyType: ["Reactive"],
-                rightsType: ["Domain Name", "Trade Mark"] // Multiple rights
+                overtitle: "Design registration",
+                mainTitle: "Secure protection for your design",
+                description: "Register your design with IP Australia to secure exclusive rights.",
+                strategyType: ["Proactive"],
+                rightsType: ["Design rights"]
+            },
+            {
+                overtitle: "Plant Breeder's Rights application",
+                mainTitle: "Protect new plant varieties",
+                description: "Secure exclusive commercial rights to a new plant variety you've bred or developed.",
+                strategyType: ["Proactive"],
+                rightsType: ["Plant breeder's rights"]
+            },
+            {
+                overtitle: "Copyright registration",
+                mainTitle: "Document your copyright ownership",
+                description: "While automatic, documenting your copyright can strengthen your position in disputes.",
+                strategyType: ["Proactive"],
+                rightsType: ["Copyright"]
             },
             {
                 overtitle: "IP audits",
                 mainTitle: "Review your IP portfolio",
-                description: "Understand and assess the health and enforceability of your trade marks.",
+                description: "Understand and assess the health and enforceability of your intellectual property.",
                 strategyType: ["Proactive"],
-                rightsType: ["IP Professional Services", "Trade Mark"] // Multiple rights
+                rightsType: ["All rights", "Trade marks"] // Multiple rights
             },
             {
-                overtitle: "Registration",
+                overtitle: "Trade mark registration",
                 mainTitle: "Register your trade mark",
                 description: "Apply to register your trade mark with IP Australia.",
                 strategyType: ["Proactive"],
-                rightsType: ["Trade Mark"]
+                rightsType: ["Trade marks"]
             },
             {
                 overtitle: "IP Professional",
                 mainTitle: "Conduct an IP rights search",
                 description: "Discover existing IP rights that may impact your business decisions.",
-                strategyType: ["Unspecified", "Proactive"], // Multiple strategies
-                rightsType: ["IP Professional Services"]
+                strategyType: ["Proactive", "Accused"], // Multiple strategies
+                rightsType: ["All rights"]
             },
             {
                 overtitle: "Letter of demand",
                 mainTitle: "Demand the other party stops infringing",
                 description: "Send a letter to the infringing party notifying them of potential infringement.",
-                strategyType: ["Reactive"],
-                rightsType: ["Other", "Patent", "Trade Mark"] // Multiple rights
+                strategyType: ["Enforcement"],
+                rightsType: ["All rights", "Patents", "Trade marks"] // Multiple rights
             },
             {
                 overtitle: "Arbitration",
                 mainTitle: "Resolve IP issues with the help of a third party",
                 description: "Agree to be bound by the decision of a highly qualified third party assessment.",
-                strategyType: ["Reactive"],
-                rightsType: ["Other"]
+                strategyType: ["Enforcement", "Accused"],
+                rightsType: ["All rights"]
             },
             {
                 overtitle: "World IP Organisation (WIPO)",
                 mainTitle: "Resolve international disputes",
                 description: "Seek dispute resolution through the WIPO Arbitration and Mediation Center",
-                strategyType: ["Reactive"],
-                rightsType: ["Other", "Patent", "Trade Mark", "Domain Name"] // Multiple rights
+                strategyType: ["Enforcement", "Accused"],
+                rightsType: ["All rights", "Patents", "Trade marks", "Design rights"] // Multiple rights
+            },
+            {
+                overtitle: "Responding to allegations",
+                mainTitle: "Address claims of infringement",
+                description: "Develop a strategy to respond to allegations that you've infringed someone else's IP rights.",
+                strategyType: ["Accused"],
+                rightsType: ["All rights"]
+            },
+            {
+                overtitle: "Design around strategy",
+                mainTitle: "Modify your product or service",
+                description: "Make changes to avoid infringement while maintaining functionality and market appeal.",
+                strategyType: ["Accused"],
+                rightsType: ["Patents", "Design rights"]
+            },
+            {
+                overtitle: "Counterclaim",
+                mainTitle: "Challenge the validity of their rights",
+                description: "Respond to accusations by challenging the validity of the accuser's IP rights.",
+                strategyType: ["Accused"],
+                rightsType: ["All rights"]
             }
         ];
 
@@ -471,13 +538,14 @@
             columns.forEach(col => col.innerHTML = '');
             
             // Function to get tag color based on strategy type
-            function getStrategyColor(type) {
-                switch(type) {
-                    case 'Proactive': return '#E3F6EC';
-                    case 'Reactive': return '#FFE9E3';
-                    default: return '#F0F0F0';
-                }
+        function getStrategyColor(type) {
+            switch(type) {
+                case 'Proactive': return '#E3F6EC'; // Light green
+                case 'Enforcement': return '#FFE9E3'; // Light red
+                case 'Accused': return '#FFF8E0'; // Light yellow
+                default: return '#F0F0F0';
             }
+        }
             
             // Randomize the order for non-linear display
             const shuffledOptions = [...optionsData].sort(() => 0.5 - Math.random());
@@ -499,9 +567,9 @@
                 // Add staggered animation delay
                 card.style.animationDelay = `${index * 0.1}s`;
                 
-                // Create HTML for multiple tags
+                // Create HTML for multiple tags with data attributes for styling
                 const rightsTagsHTML = option.rightsType.map(type => 
-                    `<span class="brick-tag tag-rights">${type}</span>`
+                    `<span class="brick-tag tag-rights" data-type="${type}">${type}</span>`
                 ).join('');
                 
                 const strategyTagsHTML = option.strategyType.map(type => 
